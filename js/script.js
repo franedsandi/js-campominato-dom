@@ -83,7 +83,7 @@ function createBox(index, className, randomNumber) {
     
         if (newBox.classList.contains('clicked')) {
             if (newBox.classList.contains('bomb')) {
-                gameLost = true; // El jugador ha perdido
+                gameLost = true;
                 endGame();
             } else {
                 score++;
@@ -94,7 +94,7 @@ function createBox(index, className, randomNumber) {
             messageSecond.textContent = `Score: ${score}`;
     
             if (clickedBoxes === (container.children.length - document.querySelectorAll('.bomb.clicked').length)) {
-                gameWon = true; // El jugador ha ganado
+                gameWon = true; 
                 endGame();
             }
         }
@@ -132,6 +132,9 @@ function reset() {
     resetButton.innerHTML = 'Start';
     score = 0;
     messageSecond.textContent = '';
+    messageThird.textContent = ''; 
+    gameWon = false; 
+    gameLost = false; 
     init();
 }
 function generateUniqueRandomNumbers(count) {
