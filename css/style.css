@@ -26,6 +26,7 @@ button , select{
 .main-wrapper{
   height: calc(100vh - 80px);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: lightgrey;
@@ -35,7 +36,6 @@ button , select{
   flex-wrap: wrap;
   width: 900px;
   height: 900px;
-  background-color: green;
 }
 .box{
   border: 2px solid white;
@@ -45,6 +45,7 @@ button , select{
   justify-content: center;
   align-items: center;
   font-size: 40px;
+  background-color: green;
   color: rgb(209, 30, 30);
 }
 .width-10{
@@ -55,8 +56,14 @@ button , select{
 }
 .width-7{
   width: calc( 100% / 7 );
-
 }
 .clicked {
-  background-color: lightblue;
+  background-color: blue;
+}
+.clicked.bomb {
+  background-color: red;
+  background-image: url('../img/bomb.png'); 
+  background-size: cover; 
+  background-repeat: no-repeat; 
+  background-position: center center;
 }

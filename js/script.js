@@ -14,14 +14,32 @@
 const container = document.querySelector('.container');
 const outcontainer = document.querySelector('.outcontainer');
 const message = document.querySelector('.message');
+const messageSecond = document.querySelector('.messagedue');
+const messageThird = document.querySelector('.messagetre');
 
 const resetButton = document.getElementById('resetButton');
 const difficultySelect = document.getElementById('dificult');
 
 resetButton.addEventListener('click', reset);
 init();
+let gameStarted = false;
+let score = 0;
+let clickedBoxes = 0;
+let gameWon = false;
+let gameLost = false;
+
+resetButton.addEventListener('click', function () {
+    if (gameStarted) {
+        reset();
+    } else {
+        resetButton.innerHTML = 'Reset';
+        gameStarted = true;
+        init();
+    }
+});
 
 function init() {
+    gameInProgress = true;
     const selectedValue = difficultySelect.value;
 
     let boxCount = 100;
@@ -51,31 +69,71 @@ function createBoxes(count, className) {
 function createBox(index, className, randomNumber) {
     const newBox = document.createElement('div');
     newBox.className = `box ${className}`;
-    newBox.innerHTML = '';
 
-    function clickHandler() {
-        newBox.classList.toggle('clicked');
-
-        if (newBox.classList.contains('clicked')) {
-            newBox.innerHTML = `<span>${randomNumber}</span>`;
-            newBox.removeEventListener('click', clickHandler); // Elimina el event listener después del clic
-        } else {
-            newBox.innerHTML = '';
-        }
+    if (randomNumber >= 1 && randomNumber <= 16) {
+        newBox.classList.add('bomb');
     }
 
+    function clickHandler() {
+        if (!gameInProgress) {
+            return;
+        }
+    
+        newBox.classList.toggle('clicked');
+    
+        if (newBox.classList.contains('clicked')) {
+            if (newBox.classList.contains('bomb')) {
+                gameLost = true; // El jugador ha perdido
+                endGame();
+            } else {
+                score++;
+            }
+    
+            clickedBoxes++;
+    
+            messageSecond.textContent = `Score: ${score}`;
+    
+            if (clickedBoxes === (container.children.length - document.querySelectorAll('.bomb.clicked').length)) {
+                gameWon = true; // El jugador ha ganado
+                endGame();
+            }
+        }
+    
+        if (newBox.classList.contains('clicked')) {
+            newBox.classList.add('show-bomb');
+        } else {
+            newBox.classList.remove('show-bomb');
+        }
+    }
     newBox.addEventListener('click', clickHandler);
 
     return newBox;
 }
 
+function endGame() {
+    gameInProgress = false;
+
+    const bombBoxes = document.querySelectorAll('.bomb');
+    bombBoxes.forEach((box) => {
+        box.classList.add('clicked', 'show-bomb');
+    });
+
+    if (gameLost) {
+        messageThird.textContent = "You Lose";
+    } else if (!gameLost && !gameWon) {
+        messageThird.textContent = "You Won";
+    }
+}
+
 function reset() {
     outcontainer.classList.remove('hide');
     message.classList.add('hide');
+    gameStarted = false;
+    resetButton.innerHTML = 'Start';
+    score = 0;
+    messageSecond.textContent = '';
     init();
-    document.resetButton.innerHTML = 'Reset';
 }
-
 function generateUniqueRandomNumbers(count) {
     const uniqueNumbers = [];
 
