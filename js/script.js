@@ -9,34 +9,28 @@
 8. add the index number to each box
 9. display the index number of each box when clicked
  */
-
-
+/********************* DOM Elements ******************************/
 const container = document.querySelector('.container');
 const outcontainer = document.querySelector('.outcontainer');
 const message = document.querySelector('.message');
 const messageSecond = document.querySelector('.messagedue');
 const messageThird = document.querySelector('.messagetre');
-
 const resetButton = document.getElementById('resetButton');
 const difficultySelect = document.getElementById('dificult');
 
-resetButton.addEventListener('click', reset);
-init();
+/********************* Game Variables ******************************/
 let gameStarted = false;
+let gameInProgress = false;
 let score = 0;
 let clickedBoxes = 0;
 let gameWon = false;
 let gameLost = false;
 
-resetButton.addEventListener('click', function () {
-    if (gameStarted) {
-        reset();
-    } else {
-        resetButton.innerHTML = 'Reset';
-        gameStarted = true;
-        init();
-    }
-});
+/********************* Start/Reset Button ******************************/
+resetButton.addEventListener('click', reset);
+
+/********************* Game Start ******************************/
+init();
 
 function init() {
     gameInProgress = true;
@@ -55,7 +49,10 @@ function init() {
 
     createBoxes(boxCount, boxClass);
 }
-
+/********************* Funtions ******************************/
+/**************************
+ **** create all boxes ****
+ *************************/
 function createBoxes(count, className) {
     container.innerHTML = '';
     const uniqueNumbers = generateUniqueRandomNumbers(count);
@@ -65,7 +62,9 @@ function createBoxes(count, className) {
         container.append(box);
     }
 }
-
+/*************************
+ **** create each box ****
+ *************************/
 function createBox(index, className, randomNumber) {
     const newBox = document.createElement('div');
     newBox.className = `box ${className}`;
@@ -73,7 +72,9 @@ function createBox(index, className, randomNumber) {
     if (randomNumber >= 1 && randomNumber <= 16) {
         newBox.classList.add('bomb');
     }
-
+    /*************************
+     * each time box clicked *
+     *************************/
     function clickHandler() {
         if (!gameInProgress) {
             return;
@@ -109,7 +110,9 @@ function createBox(index, className, randomNumber) {
 
     return newBox;
 }
-
+/*************************
+ ******* Game end ********
+ *************************/
 function endGame() {
     gameInProgress = false;
 
@@ -124,7 +127,9 @@ function endGame() {
         messageThird.textContent = "You Won";
     }
 }
-
+/***************************************
+ * Reset (begining and pressed button) *
+ **************************************/
 function reset() {
     outcontainer.classList.remove('hide');
     message.classList.add('hide');
@@ -137,6 +142,9 @@ function reset() {
     gameLost = false; 
     init();
 }
+/*************************************
+ * random numbers for bomb ubication *
+ ************************************/
 function generateUniqueRandomNumbers(count) {
     const uniqueNumbers = [];
 
@@ -150,7 +158,3 @@ function generateUniqueRandomNumbers(count) {
 
     return uniqueNumbers;
 }
-
-
-
-
