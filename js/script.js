@@ -29,11 +29,13 @@ resetButton.addEventListener('click', reset);
 
 /********************* Game Start ******************************/
 init();
+
 /********************* Funtions ******************************/
 
 /********************
  **** start game ****
  *******************/
+
 function init() {
     gameInProgress = true;
     const selectedValue = difficultySelect.value;
@@ -55,6 +57,7 @@ function init() {
 /********************
  * create all boxes *
  *******************/
+
 function createBoxes(count, className) {
     container.innerHTML = '';
     const uniqueNumbers = generateUniqueRandomNumbers(count);
@@ -64,9 +67,11 @@ function createBoxes(count, className) {
         container.append(box);
     }
 }
+
 /*******************
  * create each box *
  ******************/
+
 function createBox(index, className, randomNumber) {
     const newBox = document.createElement('div');
     newBox.className = `box ${className}`;
@@ -74,16 +79,18 @@ function createBox(index, className, randomNumber) {
     if (randomNumber >= 1 && randomNumber <= 16) {
         newBox.classList.add('bomb');
     }
-    /*************************
-     * each time box clicked *
-     *************************/
+
+    /*******************************
+     * each time box clicked / bomb*
+     ******************************/
+
     function clickHandler() {
-        if (!gameInProgress) {
+        if (!gameInProgress || newBox.classList.contains('clicked')) {
             return;
         }
-    
+
         newBox.classList.toggle('clicked');
-    
+
         if (newBox.classList.contains('clicked')) {
             if (newBox.classList.contains('bomb')) {
                 gameLost = true;
@@ -91,30 +98,34 @@ function createBox(index, className, randomNumber) {
             } else {
                 score++;
             }
-    
+
             clickedBoxes++;
-    
             messageSecond.textContent = `Score: ${score}`;
-    
+
             if (clickedBoxes === (container.children.length - document.querySelectorAll('.bomb.clicked').length)) {
-                gameWon = true; 
+                gameWon = true;
                 endGame();
             }
         }
-    
+
         if (newBox.classList.contains('clicked')) {
             newBox.classList.add('show-bomb');
         } else {
             newBox.classList.remove('show-bomb');
         }
+
+        // Eliminar el manejador de eventos después de hacer clic en la caja
+        newBox.removeEventListener('click', clickHandler);
     }
     newBox.addEventListener('click', clickHandler);
 
     return newBox;
 }
+
 /************
  * Game end *
  ***********/
+
 function endGame() {
     gameInProgress = false;
 
@@ -129,9 +140,11 @@ function endGame() {
         messageThird.textContent = "You Won";
     }
 }
+
 /***************************************
  * Reset (begining and pressed button) *
  **************************************/
+
 function reset() {
     outcontainer.classList.remove('hide');
     message.classList.add('hide');
@@ -144,9 +157,11 @@ function reset() {
     gameLost = false; 
     init();
 }
+
 /*************************************
  * random numbers for bomb ubication *
  ************************************/
+
 function generateUniqueRandomNumbers(count) {
     const uniqueNumbers = [];
 
