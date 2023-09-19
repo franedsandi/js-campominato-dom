@@ -10,20 +10,20 @@
 9. display the index number of each box when clicked
  */
 
-// 1.
+
 const container = document.querySelector('.container');
 const outcontainer = document.querySelector('.outcontainer');
 const message = document.querySelector('.message');
-// 7.
+
 const resetButton = document.getElementById('resetButton');
 const difficultySelect = document.getElementById('dificult');
-// 7.
+
 resetButton.addEventListener('click', reset);
 init();
 
 function init() {
     const selectedValue = difficultySelect.value;
-    // 4.
+
     let boxCount = 100;
     let boxClass = 'width-10';
 
@@ -37,40 +37,57 @@ function init() {
 
     createBoxes(boxCount, boxClass);
 }
-// 3.
+
 function createBoxes(count, className) {
-    // 6.
     container.innerHTML = '';
-    for (let i = 1; i <= count; i++) {
-        const box = createBox(i, className);
+    const uniqueNumbers = generateUniqueRandomNumbers(count);
+
+    for (let i = 0; i < count; i++) {
+        const box = createBox(uniqueNumbers[i], className, uniqueNumbers[i]);
         container.append(box);
     }
 }
 
-function createBox(index, className) {
+function createBox(index, className, randomNumber) {
     const newBox = document.createElement('div');
     newBox.className = `box ${className}`;
     newBox.innerHTML = '';
-    // 5.
-    newBox.addEventListener('click', function () {
-        this.classList.toggle('clicked');
-        // 8.
-        if (this.classList.contains('clicked')) {
-            this.innerHTML = `<span>${index}</span>`;
-        // 9.
+
+    function clickHandler() {
+        newBox.classList.toggle('clicked');
+
+        if (newBox.classList.contains('clicked')) {
+            newBox.innerHTML = `<span>${randomNumber}</span>`;
+            newBox.removeEventListener('click', clickHandler); // Elimina el event listener después del clic
         } else {
-            this.innerHTML = '';
+            newBox.innerHTML = '';
         }
-    });
-    
+    }
+
+    newBox.addEventListener('click', clickHandler);
+
     return newBox;
 }
-// 2.
+
 function reset() {
     outcontainer.classList.remove('hide');
     message.classList.add('hide');
     init();
     document.resetButton.innerHTML = 'Reset';
+}
+
+function generateUniqueRandomNumbers(count) {
+    const uniqueNumbers = [];
+
+    for (let i = 1; i <= count; i++) {
+        uniqueNumbers.push(i);
+    }
+    for (let i = uniqueNumbers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [uniqueNumbers[i], uniqueNumbers[j]] = [uniqueNumbers[j], uniqueNumbers[i]];
+    }
+
+    return uniqueNumbers;
 }
 
 

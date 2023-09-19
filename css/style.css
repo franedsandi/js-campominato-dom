@@ -45,7 +45,7 @@ button , select{
   justify-content: center;
   align-items: center;
   font-size: 40px;
-  color: white;
+  color: rgb(209, 30, 30);
 }
 .width-10{
   width: calc( 100% / 10 );
