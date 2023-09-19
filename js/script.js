@@ -9,14 +9,18 @@
  */
 /********************* DOM Elements ******************************/
 const container = document.querySelector('.container');
+const outcontainer = document.querySelector('.outcontainer');
+const message = document.querySelector('.message');
 const messageSecond = document.querySelector('.messagedue');
 const messageThird = document.querySelector('.messagetre');
 const resetButton = document.getElementById('resetButton');
 const difficultySelect = document.getElementById('dificult');
 
 /********************* Game Variables ******************************/
+let gameStarted = false;
 let gameInProgress = false;
 let score = 0;
+let clickedBoxes = 0;
 let gameWon = false;
 let gameLost = false;
 
@@ -26,7 +30,7 @@ resetButton.addEventListener('click', reset);
 /********************* Game Start ******************************/
 init();
 
-/********************* Functions ******************************/
+/********************* Funtions ******************************/
 
 /********************
  **** start game ****
@@ -35,10 +39,8 @@ init();
 function init() {
     gameInProgress = true;
     const selectedValue = difficultySelect.value;
-
     let boxCount = 100;
     let boxClass = 'width-10';
-
     if (selectedValue === '2') {
         boxCount = 81;
         boxClass = 'width-9';
@@ -46,10 +48,8 @@ function init() {
         boxCount = 49;
         boxClass = 'width-7';
     }
-
     createBoxes(boxCount, boxClass);
 }
-
 /********************
  * create all boxes *
  *******************/
@@ -57,12 +57,10 @@ function init() {
 function createBoxes(count, className) {
     container.innerHTML = '';
     const uniqueNumbers = generateUniqueRandomNumbers(count);
-
     for (let i = 0; i < count; i++) {
         const box = createBox(uniqueNumbers[i], className, uniqueNumbers[i]);
         container.append(box);
-    }
-}
+    }}
 
 /*******************
  * create each box *
@@ -71,7 +69,6 @@ function createBoxes(count, className) {
 function createBox(index, className, randomNumber) {
     const newBox = document.createElement('div');
     newBox.className = `box ${className}`;
-
     if (randomNumber >= 1 && randomNumber <= 16) {
         newBox.classList.add('bomb');
     }
@@ -84,9 +81,7 @@ function createBox(index, className, randomNumber) {
         if (!gameInProgress || newBox.classList.contains('clicked')) {
             return;
         }
-
         newBox.classList.toggle('clicked');
-
         if (newBox.classList.contains('clicked')) {
             if (newBox.classList.contains('bomb')) {
                 gameLost = true;
@@ -94,54 +89,45 @@ function createBox(index, className, randomNumber) {
             } else {
                 score++;
             }
-
             clickedBoxes++;
             messageSecond.textContent = `Score: ${score}`;
-
             if (checkWinCondition()) {
                 gameWon = true;
                 endGame();
-            }
-        }
-
+            }}
         if (newBox.classList.contains('clicked')) {
             newBox.classList.add('show-bomb');
         } else {
             newBox.classList.remove('show-bomb');
         }
-
         newBox.removeEventListener('click', clickHandler);
     }
     newBox.addEventListener('click', clickHandler);
-
     return newBox;
 }
-
 /************
  * Game end *
  ***********/
 
 function endGame() {
     gameInProgress = false;
-
     const bombBoxes = document.querySelectorAll('.bomb');
     bombBoxes.forEach((box) => {
         box.classList.add('clicked', 'show-bomb');
     });
-
     if (gameLost) {
         messageThird.textContent = "You Lose";
     } else if (gameWon) {
         messageThird.textContent = "You Won";
-    }
-}
-
+    }}
 /***************************************
- * Reset (beginning and pressed button) *
+ * Reset (begining and pressed button) *
  **************************************/
 
 function reset() {
-    gameInProgress = false;
+    outcontainer.classList.remove('hide');
+    message.classList.add('hide');
+    gameStarted = false;
     resetButton.innerHTML = 'Start';
     score = 0;
     messageSecond.textContent = '';
@@ -157,7 +143,6 @@ function reset() {
 
 function generateUniqueRandomNumbers(count) {
     const uniqueNumbers = [];
-
     for (let i = 1; i <= count; i++) {
         uniqueNumbers.push(i);
     }
@@ -165,14 +150,13 @@ function generateUniqueRandomNumbers(count) {
         const j = Math.floor(Math.random() * (i + 1));
         [uniqueNumbers[i], uniqueNumbers[j]] = [uniqueNumbers[j], uniqueNumbers[i]];
     }
-
     return uniqueNumbers;
 }
-
 /*************************************
  * Check win condition *
  ************************************/
 function checkWinCondition() {
     const nonBombBoxes = container.querySelectorAll('.box:not(.bomb)');
-    return [...nonBombBoxes].every((box) => box.classList.contains('clicked'));
+    const nonBombArray = Array.from(nonBombBoxes);
+    return nonBombArray.every((box) => box.classList.contains('clicked'));
 }
