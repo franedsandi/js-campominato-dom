@@ -1,13 +1,11 @@
-/*  make a grid 10 * 10 and then when click an element add the class clicked
-1. safe the container
-2. reset
-3. cicle counted boxes
-4. each cicle creates a box, repeat the cicle (counted) times with a function
-5. to each box add the toggle function when clicked or unclicked
-6. add the boxes to the container
-7. create a button to reset the container
-8. add the index number to each box
-9. display the index number of each box when clicked
+/* continue from yesterday:
+1. give each box a random number not repetitive
+2. number 1-16 will be bombs all the others will be safe
+3. when player click on any of them, it will show of is a bomb of not
+4. each box can only be clicked once
+5. if you hit one of the bomb boxes then game over and display score
+6. if the player clicks any bomb, you loose; if not you win
+7. modify yesterdays reset so the score will be played for each game and not be acumulative
  */
 /********************* DOM Elements ******************************/
 const container = document.querySelector('.container');
@@ -50,6 +48,7 @@ function init() {
     createBoxes(boxCount, boxClass);
 }
 /********************* Funtions ******************************/
+
 /**************************
  **** create all boxes ****
  *************************/

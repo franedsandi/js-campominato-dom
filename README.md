@@ -20,4 +20,12 @@ Di cosa ho bisogno per generare i numeri?
 Proviamo sempre prima con dei console.log() per capire se stiamo ricevendo i dati giusti.
 Le validazioni e i controlli possiamo farli anche in un secondo momento.
 ===
-Step by step:
+/* continue from yesterday:
+1. give each box a random number not repetitive
+2. number 1-16 will be bombs all the others will be safe
+3. when player click on any of them, it will show of is a bomb of not
+4. each box can only be clicked once
+5. if you hit one of the bomb boxes then game over and display score
+6. if the player clicks any bomb, you loose; if not you win
+7. modify yesterdays reset so the score will be played for each game and not be acumulative
+ */
