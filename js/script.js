@@ -5,7 +5,7 @@
 4. each box can only be clicked once
 5. if you hit one of the bomb boxes then game over and display score
 6. if the player clicks any bomb, you loose; if not you win
-7. modify yesterdays reset so the score will be played for each game and not be acumulative
+7. modify yesterdays reset so the score will be played for each game and do not be acumulative
  */
 /********************* DOM Elements ******************************/
 const container = document.querySelector('.container');
@@ -29,7 +29,11 @@ resetButton.addEventListener('click', reset);
 
 /********************* Game Start ******************************/
 init();
+/********************* Funtions ******************************/
 
+/********************
+ **** start game ****
+ *******************/
 function init() {
     gameInProgress = true;
     const selectedValue = difficultySelect.value;
@@ -47,11 +51,10 @@ function init() {
 
     createBoxes(boxCount, boxClass);
 }
-/********************* Funtions ******************************/
 
-/**************************
- **** create all boxes ****
- *************************/
+/********************
+ * create all boxes *
+ *******************/
 function createBoxes(count, className) {
     container.innerHTML = '';
     const uniqueNumbers = generateUniqueRandomNumbers(count);
@@ -61,9 +64,9 @@ function createBoxes(count, className) {
         container.append(box);
     }
 }
-/*************************
- **** create each box ****
- *************************/
+/*******************
+ * create each box *
+ ******************/
 function createBox(index, className, randomNumber) {
     const newBox = document.createElement('div');
     newBox.className = `box ${className}`;
@@ -109,9 +112,9 @@ function createBox(index, className, randomNumber) {
 
     return newBox;
 }
-/*************************
- ******* Game end ********
- *************************/
+/************
+ * Game end *
+ ***********/
 function endGame() {
     gameInProgress = false;
 
