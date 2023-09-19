@@ -9,18 +9,14 @@
  */
 /********************* DOM Elements ******************************/
 const container = document.querySelector('.container');
-const outcontainer = document.querySelector('.outcontainer');
-const message = document.querySelector('.message');
 const messageSecond = document.querySelector('.messagedue');
 const messageThird = document.querySelector('.messagetre');
 const resetButton = document.getElementById('resetButton');
 const difficultySelect = document.getElementById('dificult');
 
 /********************* Game Variables ******************************/
-let gameStarted = false;
 let gameInProgress = false;
 let score = 0;
-let clickedBoxes = 0;
 let gameWon = false;
 let gameLost = false;
 
@@ -30,7 +26,7 @@ resetButton.addEventListener('click', reset);
 /********************* Game Start ******************************/
 init();
 
-/********************* Funtions ******************************/
+/********************* Functions ******************************/
 
 /********************
  **** start game ****
@@ -102,7 +98,7 @@ function createBox(index, className, randomNumber) {
             clickedBoxes++;
             messageSecond.textContent = `Score: ${score}`;
 
-            if (clickedBoxes === (container.children.length - document.querySelectorAll('.bomb.clicked').length)) {
+            if (checkWinCondition()) {
                 gameWon = true;
                 endGame();
             }
@@ -114,7 +110,6 @@ function createBox(index, className, randomNumber) {
             newBox.classList.remove('show-bomb');
         }
 
-        // Eliminar el manejador de eventos después de hacer clic en la caja
         newBox.removeEventListener('click', clickHandler);
     }
     newBox.addEventListener('click', clickHandler);
@@ -136,19 +131,17 @@ function endGame() {
 
     if (gameLost) {
         messageThird.textContent = "You Lose";
-    } else if (!gameLost && !gameWon) {
+    } else if (gameWon) {
         messageThird.textContent = "You Won";
     }
 }
 
 /***************************************
- * Reset (begining and pressed button) *
+ * Reset (beginning and pressed button) *
  **************************************/
 
 function reset() {
-    outcontainer.classList.remove('hide');
-    message.classList.add('hide');
-    gameStarted = false;
+    gameInProgress = false;
     resetButton.innerHTML = 'Start';
     score = 0;
     messageSecond.textContent = '';
@@ -174,4 +167,12 @@ function generateUniqueRandomNumbers(count) {
     }
 
     return uniqueNumbers;
+}
+
+/*************************************
+ * Check win condition *
+ ************************************/
+function checkWinCondition() {
+    const nonBombBoxes = container.querySelectorAll('.box:not(.bomb)');
+    return [...nonBombBoxes].every((box) => box.classList.contains('clicked'));
 }
