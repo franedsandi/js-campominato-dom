@@ -69,6 +69,9 @@ function createBoxes(count, className) {
 function createBox(index, className, randomNumber) {
     const newBox = document.createElement('div');
     newBox.className = `box ${className}`;
+    /********
+    * bombs *
+    ********/
     if (randomNumber >= 1 && randomNumber <= 16) {
         newBox.classList.add('bomb');
     }
